@@ -1,6 +1,6 @@
 #include "LinerReadout.h"
 
-LinerReaduot::LinerReaduot(LearnMode i_mode, double i_ridge) :
+LinerReaduot::LinerReaduot(double i_ridge, LearnMode i_mode) :
     d_mode(i_mode), d_ridge(i_ridge)
 {
 }

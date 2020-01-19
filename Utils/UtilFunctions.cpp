@@ -101,7 +101,8 @@ namespace fn {
         while (!i_is.eof()) {
             double tmp;
             i_is >> tmp;
-            ++size;
+	    if (!i_is.fail() && !i_is.bad())
+                ++size;
         }
         i_is.seekg(0);
 

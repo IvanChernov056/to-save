@@ -7,7 +7,7 @@ class ParametersForSimpleNetwork {
 
     public:
     
-        ParametersForSimpleNetwork(float i_mutation, float i_cross);
+        ParametersForSimpleNetwork(float i_mutation=0.05, float i_cross=0.5);
         static ParametersForSimpleNetwork rand(float i_mutation, float i_cross);
 
         friend ParametersForSimpleNetwork operator+ (const ParametersForSimpleNetwork& i_first, const ParametersForSimpleNetwork& i_second);
@@ -26,7 +26,7 @@ class ParametersForSimpleNetwork {
         template <class T>
         static T modifyOne(T i_lowBound, T i_upBound) {
             double t = standart_rand_valuef;
-            return static_cast<T>((1.0 - t)*static_cats<double>(i_lowBound) + t*static_cats<double>(i_upBound));
+            return static_cast<T>((1.0 - t)*static_cast<double>(i_lowBound) + t*static_cast<double>(i_upBound));
         }
 
         template<class T>
@@ -37,6 +37,7 @@ class ParametersForSimpleNetwork {
     public:
         
         int neuronAmount = 400;
+        double inpVal = 0.2;
         double timeConstant = 0.44;
         double timeStep = 1.0;
         double leakingDecayRate = 0.9;
@@ -51,5 +52,7 @@ class ParametersForSimpleNetwork {
         float d_cross = 0.5;
 };
 
+
+std::ostream& operator<< (std::ostream& io_os, const ParametersForSimpleNetwork& i_param);
 
 #endif

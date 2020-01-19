@@ -2,8 +2,8 @@
 #define GA_FOR_SIMPLE_NETWORK_H
 
 
-#include "Algorithms/GeneralGeneticAlgorithm.h"
-#include "ParametrsForSimpleNetwork.h"
+#include "GeneralGeneticAlgorithm.h"
+#include <GA/Paramertrs/ParametrsForSimpleNetwork.h>
 
 #include <Networks/Networks.h>
 
@@ -16,7 +16,8 @@ public:
     {}
 
     virtual std::unique_ptr<SimpleNetwork> makeNet(const ParametersForSimpleNetwork& i_param) override {
-        
+        return std::make_unique<SimpleNetwork>(i_param.neuronAmount, i_param.inpVal, i_param.timeConstant, i_param.timeStep, i_param.leakingDecayRate, 
+        i_param.specRadius, i_param.density, i_param.noiseVariance, i_param.ridge);
     }
 };
 

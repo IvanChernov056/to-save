@@ -8,9 +8,9 @@ class ClassicEsnReservoir {
 
     public:
 
-        ClassicEsnReservoir (int i_neuronAmount, ActivationFunc i_f = acfn::genTanh(), double i_timeConstant = 0.44, 
+        ClassicEsnReservoir (int i_neuronAmount, double i_timeConstant = 0.44, 
          double i_timeStep = 1.0, double i_leakingDecayRate = 0.9, double i_specRadius = 0.79, double i_density = 0.03, 
-         double i_noiseVariance = 1e-3);
+         double i_noiseVariance = 1e-3, ActivationFunc i_f = acfn::genTanh());
 
 
         void init (int i_inpSize, int i_ofbSize);

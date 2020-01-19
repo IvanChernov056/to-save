@@ -1,7 +1,7 @@
 #include "ClassicEsnReservoir.h"
 
-ClassicEsnReservoir::ClassicEsnReservoir (int i_neuronAmount, ActivationFunc i_f, double i_timeConstant, double i_timeStep,
- double i_leakingDecayRate, double i_specRadius, double i_density, double i_noiseVariance) : 
+ClassicEsnReservoir::ClassicEsnReservoir (int i_neuronAmount, double i_timeConstant, double i_timeStep,
+ double i_leakingDecayRate, double i_specRadius, double i_density, double i_noiseVariance, ActivationFunc i_f) : 
     d_W((Matrix)RandnSpMatrix(i_neuronAmount, i_neuronAmount, i_density)), d_func(i_f), d_timeConstant(i_timeConstant),
     d_timeStep(i_timeStep), d_leakingDecayRate(i_leakingDecayRate), d_specRadius(i_specRadius), d_density(i_density),
     d_noiseVariance(i_noiseVariance), d_state(ZerosColumn(i_neuronAmount))
@@ -20,8 +20,12 @@ ClassicEsnReservoir::ClassicEsnReservoir (int i_neuronAmount, ActivationFunc i_f
 
 void ClassicEsnReservoir::init (int i_inpSize, int i_ofbSize) {
     int nr = d_W.n_rows;
-    d_Win = RanduMatrix(nr, i_inpSize).transform([](double x) {return 0.015*(x - 0.5);});
-    d_Wofb = RanduMatrix(nr, i_inpSize).transform([](double x) {return 0.56*(x - 0.5);});
+    d_Win.set_size(nr, i_inpSize);
+    d_Win.randu();
+    d_Win.transform([](double x) {return 0.015*(x - 0.5);});
+    Matrix tmpObf = RanduMatrix(nr, i_ofbSize);
+    tmpObf.transform([](double x) {return 0.56*(x - 0.5);});
+    d_Wofb = tmpObf;
 }
 
 

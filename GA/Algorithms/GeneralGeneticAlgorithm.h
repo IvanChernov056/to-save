@@ -21,7 +21,7 @@ class GeneralGeneticAlgoritnm {
 
         void testGeneration(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum);
         
-        void getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen);
+        void getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum);
         void selection();
         void generateNewPopulation();
 
@@ -32,7 +32,7 @@ class GeneralGeneticAlgoritnm {
         std::list<Param>    d_population;
         std::vector<Param>  d_selected;
         Param               d_worst;
-        std::multimap<double, list<Param>::iterator> d_allResultsPerGeneration;
+        std::multimap<double, Param> d_allResultsPerGeneration;
 
         int d_populationSize;
         int d_selectionSize;
@@ -65,27 +65,29 @@ Param GeneralGeneticAlgoritnm<Net, Param>::start(const DataList& i_data, int i_s
 template<class Net, class Param>
 void GeneralGeneticAlgoritnm<Net, Param>::initialization() {
     for (int paramNum = 0; paramNum < d_populationSize; ++paramNum)
-        d_populationSize.push_back(Param::rand(d_mutationChance, d_crossChance));
+        d_population.push_back(Param::rand(d_mutationChance, d_crossChance));
 }
 
 template<class Net, class Param>
 void GeneralGeneticAlgoritnm<Net, Param>::testGeneration(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum) {
     if (d_population.empty()) initialization();
-    getAllResults(i_data, i_skipLen, i_learnLen, i_generateLen);
+    getAllResults(i_data, i_skipLen, i_learnLen, i_generateLen, i_genNum);
     selection();
-    if (i_genNum < d_generationCount)
+    if (i_genNum < d_generationsCount)
         generateNewPopulation();
 }
 
 template<class Net, class Param>
-void GeneralGeneticAlgoritnm<Net, Param>::getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen) {
+void GeneralGeneticAlgoritnm<Net, Param>::getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum) {
     if(!d_allResultsPerGeneration.empty())
         d_allResultsPerGeneration.clear();
-    
+    int paramNum = 1;
     for (const auto& param : d_population) {
         auto net = makeNet(param);
-        double result = net->test(i_data, i_skipLen, i_learnLen, i_generateLen);
+        std::string name = "gen_" + std::to_string(i_genNum) + "_num_" + std::to_string(paramNum);
+        double result = net->test(i_data, i_skipLen, i_learnLen, i_generateLen, name, paramNum == 1 && i_genNum == 1);
         d_allResultsPerGeneration.emplace(std::make_pair(result, param));
+        ++paramNum;
     }
 }
 
@@ -117,15 +119,19 @@ void GeneralGeneticAlgoritnm<Net, Param>::generateNewPopulation() {
     }
 
     std::list<Param> newPopulation;
-    for (int i = 0; i < d_populationSize - d_selectionSize; ++i) {
+    for (int i = 0; i < d_selectionSize; ++i)
+	newPopulation.push_back(d_selected[i]);
+
+    for (auto& param : d_selected)
+        newPopulation.push_back(param + d_worst);
+
+    for (int i = 0; i < d_populationSize - 2*d_selectionSize; ++i) {
         int j = i % d_selectionSize;
         int k = (i + ::rand()) %d_selectionSize;
 
         newPopulation.push_back(d_selected[j] + d_selected[k]);
     }
 
-    for (auto& param : d_selected)
-        newPopulation.push_back(param + d_worst);
     
     d_population.swap(newPopulation);
 }

@@ -14,7 +14,7 @@ class LinerReaduot {
 
     public:
 
-        LinerReaduot(LearnMode i_mode = RIDGE, double i_ridge = 0.03);
+        LinerReaduot(double i_ridge = 0.03, LearnMode i_mode = RIDGE);
 
 
         Column forward(const Column& i_inp);

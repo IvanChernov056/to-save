@@ -1,4 +1,5 @@
 #include <Networks/Networks.h>
+#include <GA/Algorithms/GAForSimpleNetwork.h>
 
 
 int main (int argc, char* argv[]) {
@@ -27,15 +28,14 @@ int main (int argc, char* argv[]) {
 
     // return 0;
 
-    ClassicEsnReservoir reservoir (400);
-    LinerReaduot readout;
-    SimpleNetwork   network(reservoir, readout, skipLen, learnLen, genLen);
 
-    DataVector inpVec(1);
-    inpVec[0] = 0.2;
-    network.test(inpVec, data);
-    
-    CONSOLE_LOG("end");
+    GAForSimpleNetworks alg(100, 20, 100, 0.05, 0.5);
+    auto param = alg.start(data, skipLen, learnLen, genLen);
+
+    std::ofstream outParamFile("out_param_file.param");
+    outParamFile << param;
+    outParamFile.close();
+
 
     return 0;
 }
