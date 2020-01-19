@@ -12,6 +12,9 @@ namespace {
     #define     NONE    arma::fill::none
 }
 
+#define     base_standatr_value(REAL_TYPE) (static_cast<REAL_TYPE>(::rand()) / static_cast<REAL_TYPE>(RAND_MAX))
+#define     standart_rand_valuef base_standatr_value(float)
+#define     standart_rand_valued base_standatr_value(double)
 
 #define     BASE_VECTOR_GENERATOR(VEC_TYPE, ELEM_NUM, INIT_VAL) VEC_TYPE(ELEM_NUM, INIT_VAL) 
 

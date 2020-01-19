@@ -9,6 +9,8 @@ class SimpleNetwork {
 
     public:
 
+        SimpleNetwork(int neuronAmount, double timeConstant, double timeStep, double leakingDecayRate, 
+        double specRadius, double density, double noiseVariance, double ridge) {}
         SimpleNetwork(const ClassicEsnReservoir&  i_res, const LinerReaduot& i_rdout, int i_skipLen, int i_learnLen, int i_generateLen);
 
         void test (const DataVector& i_inp, const DataList& i_etalon);

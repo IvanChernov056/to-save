@@ -1,0 +1,7 @@
+*.dat
+*.png
+datasets/
+bin/
+BUILD/
+*.log
+*tmp*

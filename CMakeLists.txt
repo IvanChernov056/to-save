@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.2)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fopenmp -fsanitize=address -fsanitize-recover=address")
 set(CMAKE_BUILD_TYPE Debug)
 set(EXECUTABLE_NAME "ESN")
-set(MY_INCLUDES . ./Modules/)
+set(MY_INCLUDES . ./* ./*/*)
 file(GLOB SRC
     "./*/*/*.cpp"
     "./*/*.cpp"
