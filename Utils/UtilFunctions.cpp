@@ -66,6 +66,28 @@ namespace fn {
         return nrm;
     }
 
+
+    double epsilonNorm(const DataList& i_predicted, const DataList& i_etalon, double i_epsilon) {
+	DataVector avrg = average(i_etalon);
+	double max = +0.0;
+
+	auto pIter = i_predicted.cbegin();
+	auto eIter = i_etalon.cbegin();
+
+	for (; pIter != i_predicted.cend() && eIter != i_etalon.cend();
+					++pIter, ++eIter) {
+	    double tmp = NORM2(*pIter - *eIter);
+	    if (tmp > max && tmp > i_epsilon) max = tmp;
+	}
+
+	double avrgNorm = NORM2(avrg);
+	if (avrgNorm > 0)
+	    return max / avrgNorm;
+	
+	return max / i_epsilon;
+    }
+
+
     void printDataVector(const DataVector& i_vec, std::ostream& i_os) {
         for (int i = 0; i < i_vec.n_elem-1; ++i)
             i_os << i_vec[i] << '\t';
@@ -151,5 +173,12 @@ namespace fn {
         }
 
         return result;
+    }
+
+
+    std::string mkdir(const std::string& dirName) {
+	std::string command = std::string("~/mkdir.sh ") + dirName;
+	system(command.c_str());
+	return dirName;
     }
 }

@@ -62,9 +62,14 @@ double SimpleNetwork::test(const DataList& i_data, int i_skipLen, int i_learnLen
     DataList etalData(i_data.begin()+etalonBias, i_data.end());
     
     double nrmeError = fn::nrmse(genData, etalData);
+    double epsilonError = fn::epsilonNorm(genData, etalData, 1e-3);
     if(drawEtalon) fn::plotFromData(etalData, "etalon");
     fn::plotFromData(genData, i_name.c_str());
-    CONSOLE_LOG("nrmeError : " << nrmeError);
 
-    return nrmeError;
+    double testResult = epsilonError;
+    CONSOLE_LOG("result : " << testResult);
+
+    CONSOLE_LOG("");
+
+    return epsilonError;
 }

@@ -10,6 +10,7 @@ namespace fn {
     DataList glueTwoLists (const DataList& i_first, const DataList& i_second);
 
     double nrmse (const DataList& i_predict, const DataList& i_etalon);
+    double epsilonNorm (const DataList& i_predict, const DataList& i_etalon, double i_epsilon);
     double sqrEuqNorm (const Tensor& i_tensor);
 
     template<class T>
@@ -30,6 +31,7 @@ namespace fn {
     void plotFromFile(const std::string& i_dataName, const char* i_imgType = "png", const char* i_lineType = "lines");
     void plotFromData(const DataList& i_data, const std::string& i_dataName = "tmp_data.dat", const char* i_imgType = "png", const char* i_lineType = "lines");
     DataList readDataFromFile (int i_len, const std::string& i_file, int i_startPoint = 0);
+    std::string mkdir(const std::string& dirName);
 }
 
 

@@ -56,7 +56,7 @@ Param GeneralGeneticAlgoritnm<Net, Param>::start(const DataList& i_data, int i_s
     initialization();
     for (int generation = 1; generation <= d_generationsCount; ++generation) {
         testGeneration(i_data, i_skipLen, i_learnLen, i_generateLen, generation);
-        CONSOLE_LOG("generation " << generation << '/' << d_generationsCount 
+        CONSOLE_LOG("generation " << generation << '/' << d_generationsCount
                 << " : less err = " << d_allResultsPerGeneration.cbegin()->first);
     }
     return d_allResultsPerGeneration.cbegin()->second;
@@ -81,11 +81,15 @@ template<class Net, class Param>
 void GeneralGeneticAlgoritnm<Net, Param>::getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum) {
     if(!d_allResultsPerGeneration.empty())
         d_allResultsPerGeneration.clear();
+
     int paramNum = 1;
+    std::string dirName = fn::mkdir(std::string("gen_") + std::to_string(i_genNum));
     for (const auto& param : d_population) {
         auto net = makeNet(param);
-        std::string name = "gen_" + std::to_string(i_genNum) + "_num_" + std::to_string(paramNum);
-        double result = net->test(i_data, i_skipLen, i_learnLen, i_generateLen, name, paramNum == 1 && i_genNum == 1);
+	std::string paramName = "num_" + std::to_string(paramNum);
+        std::string path = dirName + std::string("/") + paramName;
+        double result = net->test(i_data, i_skipLen, i_learnLen, i_generateLen, path, paramNum == 1 && i_genNum == 1);
+	FILE_LOG(path + std::string(".param"), "param : \n" << param << "\nresult : \n" << result);
         d_allResultsPerGeneration.emplace(std::make_pair(result, param));
         ++paramNum;
     }
@@ -133,7 +137,7 @@ void GeneralGeneticAlgoritnm<Net, Param>::generateNewPopulation() {
     }
 
     
-    d_population.swap(newPopulation);
+    d_population = std::move(newPopulation);
 }
 
 

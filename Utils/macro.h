@@ -69,10 +69,15 @@ namespace {
 #define     BASE_LOGGING(LOG_OUT, msg) LOG_OUT << msg << '\n'
 #define     CONSOLE_LOG(msg) BASE_LOGGING(std::cout, msg)
 #define     ERROR_LOG(msg)  BASE_LOGGING(std::cerr, msg)
-#define     FILE_LOG(FILE, msg) BASE_LOGGING(FILE, msg)
+#define     FILE_LOG(FILE_NAME, msg) \
+		{\
+		 std::ofstream outFile(FILE_NAME);\
+		 BASE_LOGGING(outFile, msg);\
+		 outFile.close();\
+		}
 #define     DEBUG_LOG(msg) \
-                CONSOLE_LOG("<Debug>\n" << msg << "\n</Debug>");\
-                ERROR_LOG("<Debug>\n" << msg << "\n</Debug>")
+                CONSOLE_LOG("\n==>\n" << msg << "\n<==\n");\
+                ERROR_LOG("<\n==>\n" << msg << "\n<==")
 
 
 #endif
