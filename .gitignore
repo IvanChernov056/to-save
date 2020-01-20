@@ -3,5 +3,6 @@
 datasets/
 bin/
 BUILD/
+TEST*/
 *.log
 *tmp*
