@@ -80,11 +80,7 @@ namespace fn {
 	    if (tmp > max && tmp > i_epsilon) max = tmp;
 	}
 
-	double avrgNorm = NORM2(avrg);
-	if (avrgNorm > 0)
-	    return max / avrgNorm;
-	
-	return max / i_epsilon;
+	return max;
     }
 
 
@@ -177,7 +173,7 @@ namespace fn {
 
 
     std::string mkdir(const std::string& dirName) {
-	std::string command = std::string("~/mkdir.sh ") + dirName;
+	std::string command = std::string("~/my_local_command/mkdir.sh ") + dirName;
 	system(command.c_str());
 	return dirName;
     }
