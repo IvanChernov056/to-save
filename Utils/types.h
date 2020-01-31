@@ -3,6 +3,7 @@
 
 #include <armadillo>
 #include <vector>
+#include <map>
 
 using Matrix = arma::mat;
 using Column = arma::colvec;

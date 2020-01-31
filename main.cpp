@@ -1,5 +1,5 @@
-#include <Networks/Networks.h>
-#include <GA/Algorithms/GAForSimpleNetwork.h>
+#include "Networks.h"
+#include "GAForSimpleNetwork.h"
 
 
 int main (int argc, char* argv[]) {
@@ -8,7 +8,7 @@ int main (int argc, char* argv[]) {
         return 0;
     
     
-    int     skipLen = 1000, learnLen = 8000, genLen = 1500;
+    int     skipLen = 10, learnLen = 80, genLen = 15;
     int     totalLen = skipLen+learnLen+genLen;
     DataList data = fn::readDataFromFile(totalLen, argv[1], 1000);
 
@@ -29,7 +29,7 @@ int main (int argc, char* argv[]) {
     // return 0;
 
 
-    GAForSimpleNetworks alg(200, 20, 100, 0.05, 0.5);
+    GAForSimpleNetworks alg(20, 2, 10, 0.05, 0.5);
     auto param = alg.start(data, skipLen, learnLen, genLen);
 
     std::ofstream outParamFile("out_param_file.param");

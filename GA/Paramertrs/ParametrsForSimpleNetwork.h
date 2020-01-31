@@ -1,7 +1,7 @@
 #ifndef PARAMETRS_FOR_SIMPLE_NETWORK_H
 #define PARAMETRS_FOR_SIMPLE_NETWORK_H
 
-#include <Utils/utils.h>
+#include "utils.h"
 
 class ParametersForSimpleNetwork {
 

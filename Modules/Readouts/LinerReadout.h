@@ -2,7 +2,7 @@
 #define LINER_READOUT_H
 
 
-#include <Utils/utils.h>
+#include "utils.h"
 
 enum LearnMode {
     DIRECT_PINV,

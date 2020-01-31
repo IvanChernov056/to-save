@@ -7,11 +7,11 @@
 #include <memory>
 
 template<class Net, class Param>
-class GeneralGeneticAlgoritnm {
+class GeneralGeneticAlgorithm {
 
     public:
 
-        GeneralGeneticAlgoritnm<Net, Param> (int i_populationSize, int i_selectionSize, int i_generationsCount, 
+        GeneralGeneticAlgorithm<Net, Param> (int i_populationSize, int i_selectionSize, int i_generationsCount, 
             float i_mutationChance, float i_crossChance);
 
         Param start(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen);
@@ -43,7 +43,7 @@ class GeneralGeneticAlgoritnm {
 };
 
 template<class Net, class Param>
-GeneralGeneticAlgoritnm<Net, Param>::GeneralGeneticAlgoritnm (int i_populationSize, int i_selectionSize, int i_generationsCount, 
+GeneralGeneticAlgorithm<Net, Param>::GeneralGeneticAlgorithm (int i_populationSize, int i_selectionSize, int i_generationsCount, 
     float i_mutationChance, float i_crossChance) :
     d_populationSize(i_populationSize), d_selectionSize(i_selectionSize), d_generationsCount(i_generationsCount),
     d_mutationChance(i_mutationChance), d_crossChance(i_crossChance)
@@ -51,7 +51,7 @@ GeneralGeneticAlgoritnm<Net, Param>::GeneralGeneticAlgoritnm (int i_populationSi
 }
 
 template<class Net, class Param>
-Param GeneralGeneticAlgoritnm<Net, Param>::start(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen) {
+Param GeneralGeneticAlgorithm<Net, Param>::start(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen) {
 
     initialization();
     for (int generation = 1; generation <= d_generationsCount; ++generation) {
@@ -63,13 +63,13 @@ Param GeneralGeneticAlgoritnm<Net, Param>::start(const DataList& i_data, int i_s
 }
 
 template<class Net, class Param>
-void GeneralGeneticAlgoritnm<Net, Param>::initialization() {
+void GeneralGeneticAlgorithm<Net, Param>::initialization() {
     for (int paramNum = 0; paramNum < d_populationSize; ++paramNum)
         d_population.push_back(Param::rand(d_mutationChance, d_crossChance));
 }
 
 template<class Net, class Param>
-void GeneralGeneticAlgoritnm<Net, Param>::testGeneration(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum) {
+void GeneralGeneticAlgorithm<Net, Param>::testGeneration(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum) {
     if (d_population.empty()) initialization();
     getAllResults(i_data, i_skipLen, i_learnLen, i_generateLen, i_genNum);
     selection();
@@ -78,7 +78,7 @@ void GeneralGeneticAlgoritnm<Net, Param>::testGeneration(const DataList& i_data,
 }
 
 template<class Net, class Param>
-void GeneralGeneticAlgoritnm<Net, Param>::getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum) {
+void GeneralGeneticAlgorithm<Net, Param>::getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum) {
     if(!d_allResultsPerGeneration.empty())
         d_allResultsPerGeneration.clear();
 
@@ -96,7 +96,7 @@ void GeneralGeneticAlgoritnm<Net, Param>::getAllResults(const DataList& i_data, 
 }
 
 template<class Net, class Param>
-void GeneralGeneticAlgoritnm<Net, Param>::selection() {
+void GeneralGeneticAlgorithm<Net, Param>::selection() {
     if(d_allResultsPerGeneration.empty()) {
         ERROR_LOG("GEN_ALG::results mas is empty");
         return;
@@ -116,7 +116,7 @@ void GeneralGeneticAlgoritnm<Net, Param>::selection() {
 }
 
 template<class Net, class Param>
-void GeneralGeneticAlgoritnm<Net, Param>::generateNewPopulation() {
+void GeneralGeneticAlgorithm<Net, Param>::generateNewPopulation() {
     if(d_selected.empty()) {
         ERROR_LOG("GEN_ALG::selected list is empty");
         return;

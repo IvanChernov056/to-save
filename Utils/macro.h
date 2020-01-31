@@ -71,13 +71,20 @@ namespace {
 #define     ERROR_LOG(msg)  BASE_LOGGING(std::cerr, msg)
 #define     FILE_LOG(FILE_NAME, msg) \
 		{\
-		 std::ofstream outFile(FILE_NAME);\
+         static std::map<std::string, bool> usingFiles;\
+         usingFiles[FILE_NAME] =  false;\
+         auto mode = !usingFiles[FILE_NAME] ? \
+                std::ofstream::out | std::ofstream::trunc\
+                :\
+                std::ofstream::out | std::ofstream::app | std::ofstream::ate;\
+         usingFiles[FILE_NAME] = true;\
+		 std::ofstream outFile(FILE_NAME, mode);\
 		 BASE_LOGGING(outFile, msg);\
 		 outFile.close();\
 		}
 #define     DEBUG_LOG(msg) \
                 CONSOLE_LOG("\n==>\n" << msg << "\n<==\n");\
-                ERROR_LOG("<\n==>\n" << msg << "\n<==")
+                ERROR_LOG("\n==>\n" << msg << "\n<==")
 
 
 #endif

@@ -1,8 +1,8 @@
 #ifndef SIMPLE_NETWORK_H
 #define SIMPLE_NETWORK_H
 
-#include <Modules/readouts.h>
-#include <Modules/reservoirs.h>
+#include "readouts.h"
+#include "reservoirs.h"
 
 #include <memory>
 
