@@ -29,12 +29,15 @@ int main (int argc, char* argv[]) {
     // return 0;
 
 
-    GAForSimpleNetworks alg(20, 2, 10, 0.05, 0.5);
+    GAForSimpleNetworks alg(20, 2, 5, 0.05, 0.5);
     auto param = alg.start(data, skipLen, learnLen, genLen);
 
     std::ofstream outParamFile("out_param_file.param");
     outParamFile << param;
     outParamFile.close();
+
+
+    fn::logMessageToFile();
 
 
     return 0;

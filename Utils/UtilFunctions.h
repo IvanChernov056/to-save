@@ -32,6 +32,8 @@ namespace fn {
     void plotFromData(const DataList& i_data, const std::string& i_dataName = "tmp_data.dat", const char* i_imgType = "png", const char* i_lineType = "lines");
     DataList readDataFromFile (int i_len, const std::string& i_file, int i_startPoint = 0);
     std::string mkdir(const std::string& dirName);
+
+    void logMessageToFile(const std::string& i_fileName = "", const std::string& i_message = "");
 }
 
 

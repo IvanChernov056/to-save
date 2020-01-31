@@ -11,7 +11,8 @@ class SimpleNetwork {
     public:
 
         SimpleNetwork(int neuronAmount, double inpVal, double timeConstant, double timeStep, double leakingDecayRate, 
-        double specRadius, double density, double noiseVariance, double ridge);
+        double specRadius, double density, double noiseVariance, double i_inputWeightValue, double i_feedbackWeightValue, 
+        double i_zeroProbInInputWeight, double i_zeroProbInFeedbackWeight, double ridge);
         ~SimpleNetwork()= default;
 
         double test (const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const std::string& i_name, bool drawEtalon);

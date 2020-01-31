@@ -1,10 +1,12 @@
 #include "SimpleNetwork.h"
 
 SimpleNetwork::SimpleNetwork(int neuronAmount, double inpVal, double timeConstant, double timeStep, double leakingDecayRate, 
-        double specRadius, double density, double noiseVariance, double ridge) 
+        double specRadius, double density, double noiseVariance, double i_inputWeightValue, double i_feedbackWeightValue, 
+        double i_zeroProbInInputWeight, double i_zeroProbInFeedbackWeight, double ridge) 
 {
     d_resPtr = std::make_unique<ClassicEsnReservoir>(neuronAmount, timeConstant, timeStep, leakingDecayRate, 
-                specRadius, density, noiseVariance);
+                specRadius, density, noiseVariance, i_inputWeightValue, i_feedbackWeightValue, 
+                i_zeroProbInInputWeight, i_zeroProbInFeedbackWeight);
     d_rdoutPtr = std::make_unique<LinerReaduot>(ridge);
 
     d_inputVec = OnesColumn(2);
@@ -52,9 +54,6 @@ void SimpleNetwork::skip(const DataVector& i_inp, const DataList& i_feedback) {
 double SimpleNetwork::test(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const std::string& i_name, bool drawEtalon) {
     
     CONSOLE_LOG("name : " << i_name);
-    CONSOLE_LOG("for skip : " << i_skipLen);
-    CONSOLE_LOG("for learn : " << i_learnLen);
-    CONSOLE_LOG("for generate : " << i_generateLen);
 
     learn(i_data, i_skipLen, i_learnLen);
     DataList genData = generate(i_generateLen);

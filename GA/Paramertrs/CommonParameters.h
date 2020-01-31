@@ -2,16 +2,14 @@
 #define COMMON_PARAMETERS_H
 
 
+#include "utils.h"
+
 #include <map>
-#include <unordered_map>
 #include <string>
 
 #include <iostream>
 #include <random>
 #include <memory>
-#define standart_rand_valuef (float)rand()/RAND_MAX
-#define standart_rand_valued (double)rand()/RAND_MAX
-
 
 
 //  we make this class template to get

@@ -177,4 +177,28 @@ namespace fn {
 	system(command.c_str());
 	return dirName;
     }
+
+    void logMessageToFile(const std::string& i_fileName, const std::string& i_message) {
+        static std::map<std::string, bool> usingFiles;
+        if (!i_fileName.empty()) {
+            try {
+                auto isUsed = usingFiles.at(i_fileName);
+            } catch(...) {
+                usingFiles[i_fileName] = false;
+            }
+            auto mode = !usingFiles[i_fileName] ? 
+                std::ofstream::out | std::ofstream::trunc
+                :
+                std::ofstream::app | std::ofstream::ate;
+            usingFiles[i_fileName] = true;
+            CONSOLE_LOG("mode -- " << mode);
+            std::ofstream outFile(i_fileName, mode);
+            BASE_LOGGING(outFile, i_message);
+            outFile.close();
+        } else {
+            CONSOLE_LOG("the list of used files with reports:");
+            for (auto& node : usingFiles)
+                CONSOLE_LOG(node.first << " -- " << node.second);
+        }
+    }
 }
