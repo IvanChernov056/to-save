@@ -58,7 +58,11 @@ Parameters<Net> GeneralGeneticAlgorithm<Net>::start(const DataList& i_data, int 
     for (int generation = 1; generation <= d_generationsCount; ++generation) {
         testGeneration(i_data, i_skipLen, i_learnLen, i_generateLen, generation);
         CONSOLE_LOG("generation " << generation << '/' << d_generationsCount
-                << " : less err = " << d_allResultsPerGeneration.cbegin()->first);
+                << " : less err = " << d_allResultsPerGeneration.cbegin()->first << '\n');
+        std::string reportFileName = std::string("gen_") 
+            + std::to_string(generation) 
+            + std::string("/report");
+        FILE_LOG(reportFileName, "The less err = " << d_allResultsPerGeneration.cbegin()->first << '\n');
     }
     return d_allResultsPerGeneration.cbegin()->second;
 }

@@ -191,7 +191,6 @@ namespace fn {
                 :
                 std::ofstream::app | std::ofstream::ate;
             usingFiles[i_fileName] = true;
-            CONSOLE_LOG("mode -- " << mode);
             std::ofstream outFile(i_fileName, mode);
             BASE_LOGGING(outFile, i_message);
             outFile.close();

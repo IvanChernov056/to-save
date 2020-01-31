@@ -10,7 +10,7 @@ ClassicEsnReservoir::ClassicEsnReservoir (int i_neuronAmount, double i_timeConst
     d_zeroProbInFeedbackWeight(i_zeroProbInFeedbackWeight)
 {
     try {
-        ComplexColumn eigVal = EIGEN_SPARSE_VAL(d_W, i_neuronAmount);
+        ComplexColumn eigVal = EIGEN_SPARSE_VAL(d_W, i_neuronAmount-2);
         Column absVal = ABS(eigVal);
         double radius = absVal.max();
         if (radius > 0)
