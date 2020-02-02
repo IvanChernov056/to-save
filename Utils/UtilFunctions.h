@@ -27,6 +27,18 @@ namespace fn {
         return avrg / i_list.size();
     }
 
+    template<class T>
+    T average(T* i_data, int i_len) {
+        if (i_len <= 0)
+            throw std::runtime_error("average : len must be greater then zero");
+
+        T avrg = *i_data;
+        for (int i = 1; i < i_len; i++)
+            avrg += *(i_data+i);
+        
+        return avrg/i_len;
+    }
+
     void saveDataList (const DataList& i_data, const std::string& i_file);
     void plotFromFile(const std::string& i_dataName, const char* i_imgType = "png", const char* i_lineType = "lines");
     void plotFromData(const DataList& i_data, const std::string& i_dataName = "tmp_data.dat", const char* i_imgType = "png", const char* i_lineType = "lines");

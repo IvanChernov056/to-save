@@ -51,9 +51,7 @@ void SimpleNetwork::skip(const DataVector& i_inp, const DataList& i_feedback) {
 }
 
 
-double SimpleNetwork::test(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const std::string& i_name, bool drawEtalon) {
-    
-    CONSOLE_LOG("name : " << i_name);
+double SimpleNetwork::test(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const std::string& i_name) {
 
     learn(i_data, i_skipLen, i_learnLen);
     DataList genData = generate(i_generateLen);
@@ -62,13 +60,10 @@ double SimpleNetwork::test(const DataList& i_data, int i_skipLen, int i_learnLen
     
     double nrmeError = fn::nrmse(genData, etalData);
     double epsilonError = fn::epsilonNorm(genData, etalData, 1e-3);
-    if(drawEtalon) fn::plotFromData(etalData, "etalon");
+   
     fn::plotFromData(genData, i_name.c_str());
 
     double testResult = epsilonError;
-    CONSOLE_LOG("result : " << testResult);
-
-    CONSOLE_LOG("");
 
     return epsilonError;
 }

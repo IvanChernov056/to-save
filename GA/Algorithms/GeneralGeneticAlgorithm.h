@@ -26,6 +26,8 @@ class GeneralGeneticAlgorithm {
         void getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum);
         void selection();
         void generateNewPopulation();
+        void drawEtalon(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen);
+        double testOneParam(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const Parameters<Net>& param, const std::string& path);
 
         virtual std::unique_ptr<Net> makeNet(const Parameters<Net>& i_param) = 0;
         virtual void setDiapasonsForNetParameters() const = 0;
@@ -40,6 +42,8 @@ class GeneralGeneticAlgorithm {
         int d_populationSize;
         int d_selectionSize;
         int d_generationsCount;
+
+        int d_networksAmountPerParam{10};
 };
 
 template<class Net>
@@ -54,7 +58,9 @@ template<class Net>
 Parameters<Net> GeneralGeneticAlgorithm<Net>::start(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen) {
 
     setDiapasonsForNetParameters();
+    drawEtalon(i_data, i_skipLen, i_learnLen, i_generateLen);
     initialization();
+
     for (int generation = 1; generation <= d_generationsCount; ++generation) {
         testGeneration(i_data, i_skipLen, i_learnLen, i_generateLen, generation);
         CONSOLE_LOG("generation " << generation << '/' << d_generationsCount
@@ -83,24 +89,51 @@ void GeneralGeneticAlgorithm<Net>::testGeneration(const DataList& i_data, int i_
     selection();
     if (i_genNum < d_generationsCount)
         generateNewPopulation();
+    CONSOLE_LOG("");
 }
 
 template<class Net>
-void GeneralGeneticAlgorithm<Net>::getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, int i_genNum) {
+void GeneralGeneticAlgorithm<Net>::getAllResults(const DataList& i_data, int i_skipLen, int i_learnLen, 
+                                                                        int i_generateLen, int i_genNum) {
     if(!d_allResultsPerGeneration.empty())
         d_allResultsPerGeneration.clear();
 
     int paramNum = 1;
-    std::string dirName = fn::mkdir(std::string("gen_") + std::to_string(i_genNum));
+    std::string path = fn::mkdir(std::string("gen_") + std::to_string(i_genNum)) +std::string("/");
     for (const auto& param : d_population) {
-        auto net = makeNet(param);
-	
-    std::string path = dirName + std::string("/"); 
-    double result = net->test(i_data, i_skipLen, i_learnLen, i_generateLen, path + param.name(), paramNum == 1 && i_genNum == 1);
-	FILE_LOG(path + std::string("report"), param << "\nresult : " << result << '\n');
+        CONSOLE_LOG("gen_" << i_genNum << " : " << param.name());
+        double result = testOneParam(i_data, i_skipLen, i_learnLen, i_generateLen, param, path);
+        FILE_LOG(path + std::string("report"), param << "\nresult : " << result << '\n');
+        CONSOLE_LOG("average = " << result << '\n');
         d_allResultsPerGeneration.emplace(std::make_pair(result, param));
         ++paramNum;
     }
+}
+
+template<class Net>
+void GeneralGeneticAlgorithm<Net>::drawEtalon(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen) {
+    int etalonBias = i_skipLen + i_learnLen;
+    DataList etalonData(i_data.begin()+etalonBias, i_data.end());
+    fn::plotFromData(etalonData, "etalon");
+}
+
+template<class Net>
+double GeneralGeneticAlgorithm<Net>::testOneParam(const DataList& i_data, int i_skipLen, int i_learnLen, 
+                                int i_generateLen, const Parameters<Net>& param, const std::string& path) {
+    std::vector<double> resultsForParam;
+    
+    
+    std::string commonNamePart = fn::mkdir(path + std::string("/") + param.name()) + std::string("/net_");
+
+    for (int netNum = 0; netNum < d_networksAmountPerParam; ++netNum) {
+        auto net = makeNet(param);
+        std::string name = commonNamePart + std::to_string(netNum+1);
+        double resultOfNet = net->test(i_data, i_skipLen, i_learnLen, i_generateLen, name);
+        CONSOLE_LOG("net_" << netNum+1 << '/' << d_networksAmountPerParam << " : " << resultOfNet);
+        resultsForParam.push_back(resultOfNet);
+    }
+
+    return fn::average(resultsForParam);
 }
 
 template<class Net>

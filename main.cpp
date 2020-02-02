@@ -8,7 +8,7 @@ int main (int argc, char* argv[]) {
         return 0;
     
     
-    int     skipLen = 1000, learnLen = 6000, genLen = 1000;
+    int     skipLen = 10, learnLen = 60, genLen = 10;
     int     totalLen = skipLen+learnLen+genLen;
     DataList data = fn::readDataFromFile(totalLen, argv[1], 1000);
 
@@ -29,7 +29,7 @@ int main (int argc, char* argv[]) {
     // return 0;
 
 
-    GAForSimpleNetworks alg(200, 20, 50, 0.1, 0.5);
+    GAForSimpleNetworks alg(10, 2, 5, 0.1, 0.5);
     auto param = alg.start(data, skipLen, learnLen, genLen);
 
     std::ofstream outParamFile("out_param_file.param");
