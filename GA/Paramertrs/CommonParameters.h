@@ -22,8 +22,8 @@ class Parameters {
         struct Value;
 
     public:
-        using ParamMap = std::map<const char*, Value>;
-        using DiapasonMap = std::map<const char*, std::pair<Value, Value>>;
+        using ParamMap = std::map<std::string, Value>;
+        using DiapasonMap = std::map<std::string, std::pair<Value, Value>>;
         Parameters(const std::string& i_name = "");
 
         Parameters(const ParamMap& map);
@@ -36,7 +36,6 @@ class Parameters {
     public:
 
         Value operator[] (const std::string& i_idx) const;
-        Value operator[] (const char* i_idx) const;
         
         const std::string& name() const;
         void setName(const std::string& i_name);
@@ -49,7 +48,6 @@ class Parameters {
     private:
 
         Value& operator[] (const std::string& i_idx);
-        Value& operator[] (const char* i_idx);
 
         void mutate();
 
@@ -299,7 +297,7 @@ Parameters<Net>::Parameters (const std::string& i_name ) :
 {}
 
 template<class Net>
-Parameters<Net>::Parameters(const std::map<const char*, Parameters<Net>::Value>& map) :
+Parameters<Net>::Parameters(const Parameters<Net>::ParamMap& map) :
     d_name("none"), d_paramMap(map)
 {}
 
@@ -309,21 +307,9 @@ typename Parameters<Net>::Value Parameters<Net>::operator[] (const std::string& 
 }
 
 template<class Net>
-typename Parameters<Net>::Value Parameters<Net>::operator[] (const char* i_idx) const {
-    return d_paramMap.at(i_idx);
-}
-
-
-template<class Net>
 typename Parameters<Net>::Value& Parameters<Net>::operator[] (const std::string& i_idx) {
     return d_paramMap[i_idx.c_str()];
 }
-
-template<class Net>
-typename Parameters<Net>::Value& Parameters<Net>::operator[] (const char* i_idx) {
-    return d_paramMap[i_idx];
-}
-
 
 template<class Net>
 const std::string& Parameters<Net>::name() const {
