@@ -98,7 +98,10 @@ namespace fn {
     }
 
     void plotFromFile(const std::string& i_dataName, const char* i_imgType, const char* i_lineType) {
-        std::ofstream commandFile("command_plot.plt");
+        std::string dataName = i_dataName;
+        std::for_each(dataName.begin(), dataName.end(), [](auto &c) {if(c == '/') c = '_';});
+        std::string commandFileName = std::string("command_plot_for_")  + dataName + std::string("_.plt");
+        std::ofstream commandFile(commandFileName);
         commandFile << "set terminal " << i_imgType << '\n'
                     << "set output \'" << i_dataName << '.' << i_imgType << "\'\n"
                     << "plot \'" << i_dataName << "\' "
@@ -106,7 +109,9 @@ namespace fn {
                     << "\n"
                     ;
         commandFile.close();
-        system("gnuplot command_plot.plt");
+        std::string command = std::string("gnuplot ") + commandFileName;
+        system(command.c_str());
+        rm(commandFileName);
     }
 
     void plotFromData(const DataList& i_data, const std::string& i_dataName, const char* i_imgType, const char* i_lineType) {
@@ -173,9 +178,14 @@ namespace fn {
 
 
     std::string mkdir(const std::string& dirName) {
-	std::string command = std::string("~/my_local_command/mkdir.sh ") + dirName;
-	system(command.c_str());
-	return dirName;
+        std::string command = std::string("~/my_local_command/mkdir.sh ") + dirName;
+        system(command.c_str());
+        return dirName;
+    }
+
+    void rm(const std::string& toRemove, const std::string& keys) {
+        std::string command = std::string("rm ") + keys + std::string(" ") + toRemove;
+        system(command.c_str());
     }
 
     void logMessageToFile(const std::string& i_fileName, const std::string& i_message) {

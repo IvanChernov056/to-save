@@ -119,21 +119,22 @@ void GeneralGeneticAlgorithm<Net>::drawEtalon(const DataList& i_data, int i_skip
 
 template<class Net>
 double GeneralGeneticAlgorithm<Net>::testOneParam(const DataList& i_data, int i_skipLen, int i_learnLen, 
-                                int i_generateLen, const Parameters<Net>& param, const std::string& path) {
-    std::vector<double> resultsForParam;
+                                int i_generateLen, const Parameters<Net>& param, const std::string& path) 
+{
+    double resultsForParam[d_networksAmountPerParam];    
     
-    
-    std::string commonNamePart = fn::mkdir(path + std::string("/") + param.name()) + std::string("/net_");
+    std::string commonNamePart = fn::mkdir(path  + param.name()) + std::string("/net_");
 
+#pragma omp parallel for
     for (int netNum = 0; netNum < d_networksAmountPerParam; ++netNum) {
         auto net = makeNet(param);
         std::string name = commonNamePart + std::to_string(netNum+1);
         double resultOfNet = net->test(i_data, i_skipLen, i_learnLen, i_generateLen, name);
         CONSOLE_LOG("net_" << netNum+1 << '/' << d_networksAmountPerParam << " : " << resultOfNet);
-        resultsForParam.push_back(resultOfNet);
+        resultsForParam[netNum] = resultOfNet;
     }
 
-    return fn::average(resultsForParam);
+    return fn::average(resultsForParam, d_networksAmountPerParam);
 }
 
 template<class Net>
