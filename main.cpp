@@ -29,7 +29,7 @@ int main (int argc, char* argv[]) {
     // return 0;
 
 
-    GAForSimpleNetworks alg(5, 2, 2, 0.1, 0.5);
+    GAForSimpleNetworks alg(10, 2, 2, 0.1, 0.5);
     auto param = alg.start(data, skipLen, learnLen, genLen);
 
     std::ofstream outParamFile("out_param_file.param");

@@ -63,13 +63,6 @@ Parameters<Net> GeneralGeneticAlgorithm<Net>::start(const DataList& i_data, int 
 
     for (int generation = 1; generation <= d_generationsCount; ++generation) {
         testGeneration(i_data, i_skipLen, i_learnLen, i_generateLen, generation);
-        CONSOLE_LOG("generation " << generation << '/' << d_generationsCount
-                << " : less err = " << d_allResultsPerGeneration.cbegin()->first << '\n');
-        std::string reportFileName = std::string("gen_") 
-            + std::to_string(generation) 
-            + std::string("/report");
-        FILE_LOG(reportFileName, "The less err = " << d_allResultsPerGeneration.cbegin()->first << '\n');
-        FILE_LOG(std::string("report"), d_allResultsPerGeneration.cbegin()->second << "\nresult = " << d_allResultsPerGeneration.cbegin()->first << "\n\n");
     }
     return d_allResultsPerGeneration.cbegin()->second;
 }
@@ -101,14 +94,21 @@ void GeneralGeneticAlgorithm<Net>::getAllResults(const DataList& i_data, int i_s
 
     int paramNum = 1;
     std::string path = fn::mkdir(std::string("gen_") + std::to_string(i_genNum)) +std::string("/");
+    std::string reportFileName = path + std::string("/report");
     for (const auto& param : d_population) {
         CONSOLE_LOG("gen_" << i_genNum << " : " << param.name());
         double result = testOneParam(i_data, i_skipLen, i_learnLen, i_generateLen, param, path);
-        FILE_LOG(path + std::string("report"), param << "\nresult : " << result << '\n');
+        FILE_LOG(reportFileName, param << "\nresult : " << result << '\n');
         CONSOLE_LOG("average = " << result << '\n');
         d_allResultsPerGeneration.emplace(std::make_pair(result, param));
         ++paramNum;
     }
+
+     CONSOLE_LOG("generation " << i_genNum << '/' << d_generationsCount
+            << " : less err = " << d_allResultsPerGeneration.cbegin()->first << '\n');
+
+    FILE_LOG(reportFileName, "The less err = " << d_allResultsPerGeneration.cbegin()->first << '\n');
+    FILE_LOG(std::string("report"), path << d_allResultsPerGeneration.cbegin()->second << "\nresult = " << d_allResultsPerGeneration.cbegin()->first << "\n\n");
 }
 
 template<class Net>
