@@ -21,7 +21,7 @@ class SomReducer {
     private:
 
         Matrix d_W;
-        Column d_map;
+        std::unique_ptr<double[]> d_map;
         
         int d_outDimension;
         int d_iterations{500};

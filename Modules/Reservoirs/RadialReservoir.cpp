@@ -3,7 +3,7 @@
 
 RadialReservoir::RadialReservoir(int i_neuronsAmount, double i_inverseDispersion, double i_leakingDecayRate) :
     d_neuronsAmount(i_neuronsAmount), d_inverseDispersion(i_inverseDispersion), d_leakingDecayRate(i_leakingDecayRate),
-    d_func(exp)
+    d_func([](double x) {return exp(x);})
 {
 }
 
@@ -23,12 +23,18 @@ Column RadialReservoir::forward(const Column& i_inp) {
 
 void RadialReservoir::init (int i_inpSize, const DataList& i_data) {
 
-    std::set<Row> kernels;
-    while (kernels.size() < d_neuronsAmount) 
-        kernels.insert(i_data[rand()%i_data.size()].t());
+    std::set<int> indexes;
+    std::list<Row> rows;
+
+    while (indexes.size() <  d_neuronsAmount) {
+        int rndIdx = rand()%i_data.size();
+        if (indexes.find(rndIdx) != indexes.end()) {
+            indexes.insert(rndIdx);
+            rows.push_back(i_data[rndIdx].t());
+        }
+    }
     
-    d_S = ZerosMatrix(d_neuronsAmount, i_data.front().n_elem);
-    auto it = kernels.begin();
-    for (int i = 0; it != kernels.end(); ++it, ++i)
+    auto it = rows.begin();
+    for (int i = 0; it != rows.end(); ++it, ++i)
         d_S.row(i) = std::move(*it);
 }

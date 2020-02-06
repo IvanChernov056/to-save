@@ -9,6 +9,7 @@ namespace fn {
     DataList zipTwoLists (const DataList& i_first, const DataList& i_second);
     DataList glueTwoLists (const DataList& i_first, const DataList& i_second);
 
+    Matrix getPcaMatrix(const Matrix& i_data, int i_outDim);
     double nrmse (const DataList& i_predict, const DataList& i_etalon);
     double epsilonNorm (const DataList& i_predict, const DataList& i_etalon, double i_epsilon);
     double sqrEuqNorm (const Tensor& i_tensor);

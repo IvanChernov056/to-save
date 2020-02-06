@@ -58,7 +58,8 @@ namespace {
 
 #define     INV(MATRIX) arma::inv(MATRIX)
 #define     PINV(MATRIX) arma::pinv(MATRIX)
-#define     INV_SYMPD(MATRIX) arma::inv_sympd(MATRIX)    
+#define     INV_SYMPD(MATRIX) arma::inv_sympd(MATRIX)
+#define     COV(TENSOR) arma::cov(TENSOR)    
 
 #define     CONCATINATE_PAIR(MODE, LEFT_UP, RIGHT_DOWN) arma::join_##MODE(LEFT_UP, RIGHT_DOWN)
 #define     CONCATINATE_PAIR_HORIZ(LEFT, RIGHT) CONCATINATE_PAIR(horiz, LEFT, RIGHT)

@@ -1,6 +1,12 @@
 #include "SomReducer.h"
 
-SomReducer::SomReducer(int outDim) : d_outDimension(outDim) {}
+SomReducer::SomReducer(int outDim) : d_outDimension(outDim)
+{
+    d_map = std::make_unique<double[]>(outDim);
+    for(int i = 0; i < d_outDimension; ++i) {
+        d_map[i] = 0;
+    }
+}
 
 
 Column SomReducer::forward(const Column& i_inp) {
