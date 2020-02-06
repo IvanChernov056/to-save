@@ -8,9 +8,8 @@ class SomReducer {
 
     public:
 
-        SomReducer();
+        SomReducer(int i_outDim);
 
-        void init();
 
         void learn(const DataList& i_data);
         Column forward(const Column& i_inp);

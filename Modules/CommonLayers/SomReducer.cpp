@@ -1,8 +1,7 @@
 #include "SomReducer.h"
 
-SomReducer::SomReducer() {}
+SomReducer::SomReducer(int outDim) : d_outDimension(outDim) {}
 
-void SomReducer::init() {}
 
 Column SomReducer::forward(const Column& i_inp) {
     return d_W*i_inp;
@@ -19,7 +18,7 @@ void SomReducer::calcMap(int maxIdx) {
 }
 
 void SomReducer::learn(const DataList& i_data) {
-    init();
+    d_W = RandnMatrix(d_outDimension, i_data.front().n_elem);
 
     double sigmaReducer = exp(-1.0 / 100);
     double thetaReducer = exp(-1.0 / 100);
