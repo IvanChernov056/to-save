@@ -1,8 +1,10 @@
 #include "RadialReservoir.h"
 #include <set>
 
-RadialReservoir::RadialReservoir () {
-
+RadialReservoir::RadialReservoir(int i_neuronsAmount, double i_inverseDispersion, double i_leakingDecayRate) :
+    d_neuronsAmount(i_neuronsAmount), d_inverseDispersion(i_inverseDispersion), d_leakingDecayRate(i_leakingDecayRate),
+    d_func(exp)
+{
 }
 
 

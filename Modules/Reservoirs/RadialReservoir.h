@@ -9,7 +9,7 @@ class RadialReservoir {
 
     public:
 
-        RadialReservoir ();
+        RadialReservoir (int i_neuronsAmount, double i_inverseDispersion, double i_leakingDecayRate);
 
         void init (int i_inpSize, const DataList& i_data);
         
