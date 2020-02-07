@@ -16,11 +16,13 @@ class SimpleNetwork {
         ~SimpleNetwork()= default;
 
         double test (const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const std::string& i_name);
+        double test2 (const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const std::string& i_name);
         
     protected:
 
         void learn(const DataList& i_data, int i_skipLen, int i_learnLen);
         DataList generate(int i_generateLen);
+        DataList predict (const DataList& i_inp);
         void skip(const DataVector& i_inp, const DataList& i_feedback);
 
     protected:

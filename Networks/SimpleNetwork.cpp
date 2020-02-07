@@ -51,6 +51,16 @@ void SimpleNetwork::skip(const DataVector& i_inp, const DataList& i_feedback) {
 }
 
 
+DataList SimpleNetwork::predict(const DataList& i_inp) {
+    DataList result;
+    for (const auto& v : i_inp) {
+        Column h = d_resPtr->forward(d_inputVec, v);
+        Column y = d_rdoutPtr->forward(v);
+        result.push_back(y);
+    }
+    return result;
+}
+
 double SimpleNetwork::test(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const std::string& i_name) {
 
     learn(i_data, i_skipLen, i_learnLen);
@@ -62,6 +72,26 @@ double SimpleNetwork::test(const DataList& i_data, int i_skipLen, int i_learnLen
     double epsilonError = fn::epsilonNorm(genData, etalData, 1e-3);
    
     fn::plotFromData(genData, i_name.c_str());
+
+    double testResult = epsilonError;
+
+    return epsilonError;
+}
+
+
+double SimpleNetwork::test2(const DataList& i_data, int i_skipLen, int i_learnLen, int i_generateLen, const std::string& i_name) {
+
+    learn(i_data, i_skipLen, i_learnLen);
+    int etalonBias = i_skipLen + i_learnLen;
+    DataList etalData(i_data.begin()+etalonBias, i_data.end());
+    DataList inpData(i_data.begin()+etalonBias-1, i_data.end()-1);
+
+    DataList predictedData = predict(inpData);
+    
+    double nrmeError = fn::nrmse(predictedData, etalData);
+    double epsilonError = fn::epsilonNorm(predictedData, etalData, 1e-3);
+   
+    fn::plotFromData(predictedData, i_name.c_str());
 
     double testResult = epsilonError;
 

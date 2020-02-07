@@ -34,17 +34,17 @@ namespace fn {
 
 
     Matrix getPcaMatrix (const Matrix& i_data, int i_outDim) {
-	Matrix cov = COV(i_data.t());
-	Matrix eigVec;
-	Column eigVal;
+        Matrix cov = COV(i_data.t());
+        Matrix eigVec;
+        Column eigVal;
 
-	EIGEN_SYM_DECOMPOSE(eigVal, eigVec, cov);
-	
-	Matrix result(i_data.n_rows, i_outDim);
-	for (int i = 0; i < i_outDim; ++i)
-	    result.col(i) =eigVec.col(i);
+        EIGEN_SYM_DECOMPOSE(eigVal, eigVec, cov);
+        
+        Matrix result(i_data.n_rows, i_outDim);
+        for (int i = 0; i < i_outDim; ++i)
+            result.col(i) =eigVec.col(i);
 
-	return result.t();
+        return result.t();
     }
 
     double nrmse (const DataList& i_predicted, const DataList& i_etalon) {
