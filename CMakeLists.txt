@@ -13,6 +13,7 @@ set(MY_INCLUDES
 
     ./Modules/Readouts
     ./Modules/Reservoirs
+    ./Modules/CommonLayers
     ./GA/Algorithms
     ./GA/Paramertrs
 )
